@@ -7,17 +7,20 @@ import api from '../../utils/api';
 type Props = {};
 
 const RegisterPage = (_props: Props) => {
-	const { login } = authState;
+	const { saveLogin } = authState;
 	const user = authState.user();
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = Object.fromEntries(new FormData(event.currentTarget));
 		const response = await api.register('post', 'api/auth/login', data);
+
+		// show error message or save user and redirect
+
 		if (response.state == 'fail') {
 			toast.error(response.message);
 		} else if (response.state == 'success') {
-			login(response.user);
+			saveLogin(response.user);
 			toast.success(response.message);
 		}
 	};

@@ -17,6 +17,9 @@ const RegisterPage = (_props: Props) => {
 		event.preventDefault();
 		const data = Object.fromEntries(new FormData(event.currentTarget));
 		const response = await api.register('post', 'api/auth/register', data);
+
+		// show error message or redirect to login if successful
+
 		if (response.state == 'fail') {
 			toast.error(response.message);
 		} else if (response.state == 'success') {

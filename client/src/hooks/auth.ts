@@ -4,7 +4,7 @@ const user = () => {
 	return localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : null;
 };
 
-const login = (user: IUserData) => {
+const saveLogin = (user: IUserData) => {
 	localStorage.setItem('user', JSON.stringify(user));
 	window.location.reload();
 };
@@ -14,4 +14,4 @@ const logout = () => {
 	window.location.reload();
 };
 
-export default { user, login, logout };
+export default { user, saveLogin, logout };
