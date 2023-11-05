@@ -1,5 +1,7 @@
 # Hello World app
 
+![App Screenshot](./mockup.png)
+
 ## Authors
 
 -  [@thesatyam05](https://www.github.com/thesatyam05)
