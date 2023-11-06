@@ -5,26 +5,35 @@ import Input from '../components/Input';
 import authState from '../hooks/auth';
 import toast from 'react-hot-toast';
 import api from '../../utils/api';
+import Spinner from '../components/Spinner';
 
 type Props = {};
 
 const RegisterPage = (_props: Props) => {
 	const [register, setRegister] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const user = authState.user();
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const data = Object.fromEntries(new FormData(event.currentTarget));
-		const response = await api.register('post', 'api/auth/register', data);
+		try {
+			setLoading(true);
+			const data = Object.fromEntries(new FormData(event.currentTarget));
+			const response = await api.register('post', 'api/auth/register', data);
 
-		// show error message or redirect to login if successful
+			// show error message or redirect to login if successful
 
-		if (response.state == 'fail') {
-			toast.error(response.message);
-		} else if (response.state == 'success') {
-			toast.success(response.message);
-			setRegister(true);
+			if (response.state == 'fail') {
+				toast.error(response.message);
+			} else if (response.state == 'success') {
+				toast.success(response.message);
+				setRegister(true);
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -52,8 +61,9 @@ const RegisterPage = (_props: Props) => {
 					<div>
 						<button
 							type='submit'
-							className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
-							Sign up
+							className='flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+							{loading && <Spinner className='w-4 h-4 animate-spin mr-2' />}
+							{loading ? 'Signing you up...' : 'Sign up'}
 						</button>
 					</div>
 				</form>

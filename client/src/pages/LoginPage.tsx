@@ -1,27 +1,39 @@
+import { useState } from 'react';
+
 import { Navigate } from 'react-router-dom';
 import Input from '../components/Input';
 import authState from '../hooks/auth';
 import toast from 'react-hot-toast';
 import api from '../../utils/api';
+import Spinner from '../components/Spinner';
 
 type Props = {};
 
 const RegisterPage = (_props: Props) => {
+	const [loading, setLoading] = useState(false);
+
 	const { saveLogin } = authState;
 	const user = authState.user();
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const data = Object.fromEntries(new FormData(event.currentTarget));
-		const response = await api.register('post', 'api/auth/login', data);
+		try {
+			setLoading(true);
+			const data = Object.fromEntries(new FormData(event.currentTarget));
+			const response = await api.register('post', 'api/auth/login', data);
 
-		// show error message or save user and redirect
+			// show error message or save user and redirect
 
-		if (response.state == 'fail') {
-			toast.error(response.message);
-		} else if (response.state == 'success') {
-			saveLogin(response.user);
-			toast.success(response.message);
+			if (response.state == 'fail') {
+				toast.error(response.message);
+			} else if (response.state == 'success') {
+				saveLogin(response.user);
+				toast.success(response.message);
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -44,8 +56,9 @@ const RegisterPage = (_props: Props) => {
 					<div>
 						<button
 							type='submit'
-							className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
-							Sign in
+							className='flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+							{loading && <Spinner className='w-4 h-4 animate-spin mr-2' />}
+							{loading ? 'Logging you in...' : 'Sign in'}
 						</button>
 					</div>
 				</form>
