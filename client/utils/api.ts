@@ -1,8 +1,11 @@
 import { IUserData } from '../types/userData';
 
+const backend_base_url =
+	import.meta.env.MODE === 'development' ? 'http://localhost:8000/' : 'https://backend.com/';
+
 const register = async (method: string, endPoint: string, data: any) => {
 	try {
-		const resp = await fetch(`http://localhost:8000/${endPoint}`, {
+		const resp = await fetch(`${backend_base_url}${endPoint}`, {
 			method: method,
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
