@@ -1,7 +1,9 @@
 import { IUserData } from '../types/userData';
 
 const backend_base_url =
-	import.meta.env.MODE === 'development' ? 'http://localhost:8000/' : 'https://backend.com/';
+	import.meta.env.MODE === 'development'
+		? 'http://localhost:8000/'
+		: 'https://hworld-server.vercel.app/';
 
 const register = async (method: string, endPoint: string, data: any) => {
 	try {
