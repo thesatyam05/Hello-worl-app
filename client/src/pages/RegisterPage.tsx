@@ -56,8 +56,8 @@ const RegisterPage = (_props: Props) => {
 			<div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
 				<form onSubmit={handleSubmit} className='space-y-6'>
 					<Input id='name' name='name' type='text' label='Name' />
-					<Input id='email' name='email' type='text' label='Email' />
-					<Input id='password' name='password' type='text' label='Password' />
+					<Input id='email' name='email' type='email' label='Email' />
+					<Input id='password' name='password' type='password' label='Password' />
 					<div>
 						<button
 							type='submit'
